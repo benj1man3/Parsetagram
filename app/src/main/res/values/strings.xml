@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">parsetagram</string>
+    <string name="username">username_text</string>
+    <string name="password">password_text</string>
+</resources>
