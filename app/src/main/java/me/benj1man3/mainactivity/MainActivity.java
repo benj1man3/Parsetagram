@@ -1,5 +1,6 @@
 package me.benj1man3.mainactivity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,12 +40,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void login(String username, String password){
-        //TODO( benj1man3)- do later
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                if(e!= null){
-                    Log.d("LoginActivity", "Login Successful");
+                if(e == null){
+                    Log.d("LoginActivity", "Login Successful!");
+                    final Intent intent=new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
                 }
                 else{
                     Log.e("LoginActivity", "Login Failure");
