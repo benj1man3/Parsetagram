@@ -28,6 +28,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
+
         descriptionInput = findViewById(R.id.etDescription);
         createButton = findViewById(R.id.btnCreate);
         refreshButton = findViewById(R.id.btnRefresh);
