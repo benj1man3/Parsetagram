@@ -24,6 +24,9 @@ public class Post extends ParseObject {
         return getParseFile(KEY_IMAGE);
     }
 
+    public String getCreatedAtString() {
+        return getCreatedAt().toString();
+    }
     public ParseFile getMedia(){
         return getParseFile("media");
     }

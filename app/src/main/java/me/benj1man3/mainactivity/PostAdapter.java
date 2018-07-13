@@ -55,6 +55,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             viewHolder.ivProfileImage.setImageResource(R.drawable.instagram_name);
         }
 
+        //add the time to the post
+        viewHolder.tvTime.setText(getRelativeTimeAgo(post.getCreatedAtString()));
+
 
     }
 
