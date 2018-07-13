@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 final String username = usernameInput.getText().toString();
                 final String password = passwordInput.getText().toString();
 
-                login(username, password);
+                login("benj1man3","password123");
+                //login(username, password);
 
             }
         });
@@ -100,4 +101,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
