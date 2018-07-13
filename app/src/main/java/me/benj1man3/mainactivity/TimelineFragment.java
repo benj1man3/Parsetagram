@@ -2,6 +2,7 @@ package me.benj1man3.mainactivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ public class TimelineFragment extends Fragment {
     RecyclerView rvPost;
 
     private Button refreshButton;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         // Defines the xml file for the fragment
@@ -45,6 +47,12 @@ public class TimelineFragment extends Fragment {
 
         refreshButton = view.findViewById(R.id.btnRefresh);
 
+        rvPost = view.findViewById(R.id.rvPost);
+
+        posts = new ArrayList<>();
+        postAdapter = new PostAdapter(posts);
+        rvPost.setAdapter(postAdapter);
+        rvPost.setLayoutManager(new LinearLayoutManager(getContext()));
 
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +76,12 @@ public class TimelineFragment extends Fragment {
                                 + objects.get(i).getDescription()
                                 + "\nusername=" +objects.get(i).getUser().getUsername()
                         );
+
+                        posts.clear();
+                        posts.addAll(objects);
+                        postAdapter.notifyDataSetChanged();
+
+
                     }
                 }else{
                     e.printStackTrace();
@@ -75,5 +89,7 @@ public class TimelineFragment extends Fragment {
             }
         });
     }
+
+
 
 }

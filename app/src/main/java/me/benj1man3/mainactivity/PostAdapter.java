@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.parse.ParseFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +48,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         viewHolder.tvBody.setText(post.getDescription());
         //viewHolder.tvTime.setText(getRelativeTimeAgo(post.getCreatedAt()));
 
-        Glide.with(context).load(post.getUser()).into(viewHolder.ivProfileImage);
+
+        ParseFile picture = post.getImage();
+        if (picture != null) {
+            Glide.with(context).load(post.getImage().getUrl()).into(viewHolder.ivProfileImage);
+        } else viewHolder.ivProfileImage.setImageResource(R.drawable.instagram_name);
+
     }
 
     @Override
@@ -72,7 +78,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         return relativeDate;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
@@ -84,12 +91,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
             //perform findViewById lookups
 
 
-            //TODO- set the images, username, and body text
+            //TODO - set the images, username, and body text
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTime = (TextView) itemView.findViewById(R.id.tvTime);
-            //tvScreenName=(TextView) itemView.findViewById(R.id.tvScreenName);
         }
     }
 }
