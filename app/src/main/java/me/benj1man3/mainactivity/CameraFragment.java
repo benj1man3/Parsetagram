@@ -1,5 +1,7 @@
 package me.benj1man3.mainactivity;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,8 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.io.ByteArrayOutputStream;
 
 import me.benj1man3.mainactivity.model.Post;
 
@@ -53,19 +58,20 @@ public class CameraFragment extends Fragment {
                 final String description=descriptionInput.getText().toString();
                 final ParseUser user = ParseUser.getCurrentUser();
 
-                //final File file=new File(imagePath);
-                //final ParseFile parseFile=new ParseFile(file);
+                Bitmap bitmap = ((BitmapDrawable)ivPhoto.getDrawable()).getBitmap();
+                //final File file=new File(conversionBitmapParseFile(bitmap));
+                final ParseFile parseFile=conversionBitmapParseFile(bitmap);
 
-                createPost(description, user);
+                createPost(description,parseFile, user);
             }
         });
     }
 
 
-    private void createPost(String description,  ParseUser user){
+    private void createPost(String description, ParseFile imageFile, ParseUser user){
         final Post newPost= new Post();
         newPost.setDescription(description);
-        //newPost.setImage(imageFile);
+        newPost.setImage(imageFile);
         newPost.setUser(user);
 
         newPost.saveInBackground(new SaveCallback() {
@@ -79,5 +85,13 @@ public class CameraFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public ParseFile conversionBitmapParseFile(Bitmap imageBitmap){
+        ByteArrayOutputStream byteArrayOutputStream=new ByteArrayOutputStream();
+        imageBitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+        byte[] imageByte = byteArrayOutputStream.toByteArray();
+        ParseFile parseFile = new ParseFile("image_file.png",imageByte);
+        return parseFile;
     }
 }

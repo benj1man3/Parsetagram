@@ -2,9 +2,9 @@ package me.benj1man3.mainactivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,7 @@ public class TimelineFragment extends Fragment {
     // The onCreateView method is called when Fragment should create its View object hierarchy,
     // either dynamically or via XML layout inflation.
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     PostAdapter postAdapter;
     ArrayList<Post> posts;
     RecyclerView rvPost;
@@ -45,6 +46,17 @@ public class TimelineFragment extends Fragment {
         // Setup any handles to view objects here
         // EditText etFoo = (EditText) view.findViewById(R.id.etFoo);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadTopPosts();            }
+        });
+
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         refreshButton = view.findViewById(R.id.btnRefresh);
 
         rvPost = view.findViewById(R.id.rvPost);
@@ -60,29 +72,25 @@ public class TimelineFragment extends Fragment {
                 loadTopPosts();
             }
         });
+
+        loadTopPosts();
+
     }
 
 
     private void loadTopPosts(){
         final Post.Query postsQuery=new Post.Query();
-        postsQuery.getTop().withUser();
+        postsQuery.getTop().withUser().orderByDescending("createdAt");
 
         postsQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if(e == null){
-                    for(int i=0;i<objects.size();i++){
-                        Log.d("HomeActivity", "Post[" + i + "] = "
-                                + objects.get(i).getDescription()
-                                + "\nusername=" +objects.get(i).getUser().getUsername()
-                        );
-
-                        posts.clear();
-                        posts.addAll(objects);
-                        postAdapter.notifyDataSetChanged();
-
-
-                    }
+                    postAdapter.mPosts.clear();
+                    posts.clear();
+                    posts.addAll(objects);
+                    postAdapter.notifyDataSetChanged();
+                    swipeRefreshLayout.setRefreshing(false);
                 }else{
                     e.printStackTrace();
                 }

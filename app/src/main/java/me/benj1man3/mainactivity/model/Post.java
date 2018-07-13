@@ -24,6 +24,14 @@ public class Post extends ParseObject {
         return getParseFile(KEY_IMAGE);
     }
 
+    public ParseFile getMedia(){
+        return getParseFile("media");
+    }
+
+    public void setMedia(ParseFile parseFile){
+        put("media", parseFile);
+    }
+
     public void setImage(ParseFile image) {
         put(KEY_IMAGE, image);
     }

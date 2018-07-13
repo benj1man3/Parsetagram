@@ -71,6 +71,10 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
 
+
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.flContainer, fragment1).commit();
+
     }
 
     // Returns the File for a photo stored on disk given the fileName

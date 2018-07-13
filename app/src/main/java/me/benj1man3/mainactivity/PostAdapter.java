@@ -21,7 +21,7 @@ import java.util.Locale;
 import me.benj1man3.mainactivity.model.Post;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
-    private List<Post> mPosts;
+    public List<Post> mPosts;
     Context context;
 
     public PostAdapter(List<Post> posts){
@@ -48,11 +48,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         viewHolder.tvBody.setText(post.getDescription());
         //viewHolder.tvTime.setText(getRelativeTimeAgo(post.getCreatedAt()));
 
-
         ParseFile picture = post.getImage();
         if (picture != null) {
-            Glide.with(context).load(post.getImage().getUrl()).into(viewHolder.ivProfileImage);
-        } else viewHolder.ivProfileImage.setImageResource(R.drawable.instagram_name);
+            Glide.with(context).load(picture.getUrl()).into(viewHolder.ivProfileImage);
+        } else {
+            viewHolder.ivProfileImage.setImageResource(R.drawable.instagram_name);
+        }
+
 
     }
 
